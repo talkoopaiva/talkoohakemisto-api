@@ -1,0 +1,15 @@
+-r requirements.txt
+cov-core==1.7
+coverage==3.7.1
+execnet==1.2.0
+factory-boy==2.3.1
+flake8==2.1.0
+mccabe==0.2.1
+pep8==1.4.6
+py==1.4.20
+pyflakes==0.7.3
+pytest==2.5.2
+pytest-cov==1.6
+pytest-instafail==0.1.1
+pytest-xdist==1.10
+webassets==0.8
