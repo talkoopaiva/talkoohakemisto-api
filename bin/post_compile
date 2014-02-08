@@ -1,0 +1,9 @@
+# Fail fast and fail hard.
+set -eo pipefail
+
+# Syntax sugar.
+source $BIN_DIR/utils
+
+# Run database migrations.
+puts-step "Running database migrations"
+alembic upgrade head 2>&1 | indent
