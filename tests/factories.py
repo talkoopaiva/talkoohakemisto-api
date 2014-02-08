@@ -24,3 +24,8 @@ class MunicipalityFactory(Factory):
     FACTORY_FOR = models.Municipality
     code = Sequence(lambda n: n)
     name = Sequence(lambda n: u'Kunta {0}'.format(n))
+
+
+class VoluntaryWorkTypeFactory(Factory):
+    FACTORY_FOR = models.VoluntaryWorkType
+    name = Sequence(lambda n: u'Tyyppi {0}'.format(n))

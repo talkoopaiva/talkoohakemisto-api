@@ -6,3 +6,10 @@ class MunicipalitySerializer(Serializer):
 
     class Meta:
         fields = ('id', 'name')
+
+
+class VoluntaryWorkTypeSerializer(Serializer):
+    id = fields.String()
+
+    class Meta:
+        fields = ('id', 'name')

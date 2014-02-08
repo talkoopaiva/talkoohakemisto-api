@@ -46,7 +46,9 @@ class Application(Flask):
 
     def _init_blueprints(self):
         from .views.municipality import municipality
+        from .views.type import type
         self.register_blueprint(municipality)
+        self.register_blueprint(type)
 
     def _init_extensions(self):
         """Initialize and configure Flask extensions with this application."""

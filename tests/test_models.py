@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .factories import MunicipalityFactory
+from .factories import MunicipalityFactory, VoluntaryWorkTypeFactory
 
 
 class TestMunicipality(object):
@@ -16,3 +16,17 @@ class TestMunicipality(object):
         assert repr(municipality) == '<Municipality {0!r}>'.format(
             municipality.name
         )
+
+
+class TestVoluntaryWorkType(object):
+    def test_unicode(self):
+        type_ = VoluntaryWorkTypeFactory.build()
+        assert unicode(type_) == type_.name
+
+    def test_str(self):
+        type_ = VoluntaryWorkTypeFactory.build(name=u'Työpaja')
+        assert str(type_) == 'Työpaja'
+
+    def test_repr(self):
+        type_ = VoluntaryWorkTypeFactory.build()
+        assert repr(type_) == '<VoluntaryWorkType {0!r}>'.format(type_.name)
