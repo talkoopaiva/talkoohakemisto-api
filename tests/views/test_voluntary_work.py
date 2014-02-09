@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import json, url_for
 import pytest
+import mock
 
 from talkoohakemisto import models, serializers
 from talkoohakemisto.extensions import db
@@ -239,16 +240,25 @@ class TestVoluntaryWorkCreation(object):
             }
         )
 
-    def test_response_has_proper_content_type(self, response):
-        assert response.mimetype == 'application/vnd.api+json'
-
     @pytest.fixture
     def voluntary_work(self, response):
         id = response.json['voluntary_works'][0]['id']
         return models.VoluntaryWork.query.get(id)
 
+    @pytest.yield_fixture(autouse=True)
+    def mock_email_confirmation_service_cls(self):
+        import_path = (
+            'talkoohakemisto.views.voluntary_work.'
+            'VoluntaryWorkEmailConfirmationService'
+        )
+        with mock.patch(import_path) as mock_service:
+            yield mock_service
+
     def test_returns_201(self, response):
         assert response.status_code == 201
+
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
 
     def test_response_has_location_header(self, response, voluntary_work):
         url = url_for(
@@ -257,6 +267,15 @@ class TestVoluntaryWorkCreation(object):
             _external=True
         )
         assert response.location == url
+
+    def test_sends_confirmation_email(
+        self, response, mock_email_confirmation_service_cls, voluntary_work
+    ):
+        mock_email_confirmation_service_cls.assert_called_with(
+            voluntary_work.id
+        )
+        service = mock_email_confirmation_service_cls(voluntary_work.id)
+        assert service.send_confirmation_email.called
 
     def test_saves_voluntary_work_to_database(
         self, data, voluntary_work, municipality, type

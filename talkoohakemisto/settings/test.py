@@ -25,6 +25,14 @@ DEBUG = True
 
 TESTING = True
 
+
+#
+# Mail
+# ----
+
+MAIL_SUPPRESS_SEND = True
+
+
 #
 # SQLAlchemy
 # ----------

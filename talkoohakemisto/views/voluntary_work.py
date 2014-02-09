@@ -10,6 +10,8 @@ from ..serializers import (
     VoluntaryWorkSerializer,
     VoluntaryWorkTypeSerializer,
 )
+from ..services import VoluntaryWorkEmailConfirmationService
+
 
 voluntary_work = Blueprint(
     name='voluntary_work',
@@ -46,6 +48,9 @@ def post():
     voluntary_work = VoluntaryWork(**data)
     db.session.add(voluntary_work)
     db.session.commit()
+
+    service = VoluntaryWorkEmailConfirmationService(voluntary_work.id)
+    service.send_confirmation_email()
 
     response = jsonify(**_serialize([voluntary_work]))
     response.status_code = 201

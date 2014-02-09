@@ -1,0 +1,15 @@
+Hei!
+
+Kiitos Talkoiden ilmoittamisesta Talkoot.fi-sivustolla. Jos haluat muokata
+tulevien talkoidesi tietoja, hyödynnä tätä linkkiä:
+
+{{ edit_url|safe }}
+
+Jos haluat jakaa talkoitasi eteenpäin ja innostaa talkooväkeä osallistumaan
+talkoisiisi, jaa tätä linkkiä eteenpäin:
+
+www.talkoot.fi/xxx
+
+Jos et ole ilmoittanut Talkoita talkoot.fi-sivustolla, jonkun on täytynyt
+laittaa sähköpostisi verkkosivustolle epähuomiossa ja voit jättää tämän
+sähköpostin huomioimatta. Kiitos!

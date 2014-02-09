@@ -26,6 +26,14 @@ PROJECT_ROOT = os.path.abspath(
 # to ``True``.
 SESSION_COOKIE_HTTPONLY = True
 
+
+#
+# Mail
+# -----
+
+MAIL_DEFAULT_SENDER = u'Talkoopäivä <info@talkoot.fi>'
+
+
 #
 # Sentry
 # ------
