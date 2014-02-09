@@ -1,9 +1,30 @@
 # -*- coding: utf-8 -*-
 import pytest
 
-from talkoohakemisto import services
+from talkoohakemisto.services import (
+    VoluntaryWorkEditTokenService,
+    VoluntaryWorkEmailConfirmationService
+)
 from talkoohakemisto.extensions import mail
 from . import factories
+
+
+class TestVoluntaryWorkEditTokenService(object):
+    @pytest.fixture
+    def expected_token(self):
+        return 'MTIz.2y16vOnURswWiVWkpHsS414wiag'
+
+    def test_get_token(self, expected_token):
+        token = VoluntaryWorkEditTokenService.get_token(123)
+        assert token == 'MTIz.2y16vOnURswWiVWkpHsS414wiag'
+
+    def test_get_voluntary_id_from_token(self):
+        voluntary_work_id = (
+            VoluntaryWorkEditTokenService.get_voluntary_work_id_from_token(
+                'MTIz.2y16vOnURswWiVWkpHsS414wiag'
+            )
+        )
+        assert voluntary_work_id == 123
 
 
 @pytest.mark.usefixtures('database')
@@ -13,21 +34,16 @@ class TestVoluntaryWorkConfirmationService(object):
         return factories.VoluntaryWorkFactory(id=123)
 
     @pytest.fixture
-    def expected_code(self):
+    def expected_token(self):
         return 'MTIz.2y16vOnURswWiVWkpHsS414wiag'
 
     @pytest.fixture
-    def expected_url(self, expected_code):
-        return 'https://hakemisto.talkoot.fi/123/muokkaa/' + expected_code
+    def expected_url(self, expected_token):
+        return 'https://hakemisto.talkoot.fi/123/muokkaa/' + expected_token
 
     @pytest.fixture
     def service(self, voluntary_work):
-        return services.VoluntaryWorkEmailConfirmationService(
-            voluntary_work.id
-        )
-
-    def test_get_editing_code(self, service, expected_code):
-        assert service.get_editing_code() == expected_code
+        return VoluntaryWorkEmailConfirmationService(voluntary_work.id)
 
     def test_get_editing_url(self, service, expected_url):
         assert service.get_editing_url() == expected_url

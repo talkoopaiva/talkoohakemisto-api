@@ -10,6 +10,9 @@ import warnings
 
 import colander
 from flask import Flask, jsonify, _request_ctx_stack
+import itsdangerous
+import jsonpatch
+import jsonpointer
 from sqlalchemy.exc import SAWarning
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -84,6 +87,16 @@ class Application(Flask):
         @self.errorhandler(400)
         def bad_request(error):
             return jsonify(message=u'Bad request'), 400
+
+        @self.errorhandler(jsonpatch.JsonPatchException)
+        @self.errorhandler(jsonpointer.JsonPointerException)
+        def json_patch_exception(error):
+            return jsonify(message=unicode(error)), 400
+
+        @self.errorhandler(403)
+        @self.errorhandler(itsdangerous.BadData)
+        def forbidden(error):
+            return jsonify(message=u'Forbidden'), 403
 
         @self.errorhandler(404)
         @self.errorhandler(NoResultFound)

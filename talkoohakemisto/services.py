@@ -6,24 +6,33 @@ from .extensions import mail
 from .models import VoluntaryWork
 
 
-class VoluntaryWorkEmailConfirmationService(object):
-    def __init__(self, voluntary_work_id):
-        self.voluntary_work = VoluntaryWork.query.get(voluntary_work_id)
-
-    def get_serializer(self):
+class VoluntaryWorkEditTokenService(object):
+    @staticmethod
+    def get_serializer():
         return URLSafeSerializer(
             current_app.secret_key,
             salt='edit-voluntary-work'
         )
 
-    def get_editing_code(self):
-        serializer = self.get_serializer()
-        return serializer.dumps(self.voluntary_work.id)
+    @classmethod
+    def get_token(cls, voluntary_work_id):
+        return cls.get_serializer().dumps(voluntary_work_id)
+
+    @classmethod
+    def get_voluntary_work_id_from_token(cls, token):
+        return cls.get_serializer().loads(token)
+
+
+class VoluntaryWorkEmailConfirmationService(object):
+    def __init__(self, voluntary_work_id):
+        self.voluntary_work = VoluntaryWork.query.get(voluntary_work_id)
 
     def get_editing_url(self):
-        return u'https://hakemisto.talkoot.fi/{id}/muokkaa/{code}'.format(
+        return u'https://hakemisto.talkoot.fi/{id}/muokkaa/{token}'.format(
             id=self.voluntary_work.id,
-            code=self.get_editing_code()
+            token=VoluntaryWorkEditTokenService.get_token(
+                self.voluntary_work.id
+            )
         )
 
     def send_confirmation_email(self):

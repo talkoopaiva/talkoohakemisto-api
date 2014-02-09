@@ -1,6 +1,8 @@
 import operator
 
-from flask import Blueprint, jsonify, request, url_for
+from flask import abort, Blueprint, jsonify, request, Response, url_for
+import itsdangerous
+import jsonpatch
 
 from ..extensions import db
 from ..models import VoluntaryWork
@@ -10,7 +12,10 @@ from ..serializers import (
     VoluntaryWorkSerializer,
     VoluntaryWorkTypeSerializer,
 )
-from ..services import VoluntaryWorkEmailConfirmationService
+from ..services import (
+    VoluntaryWorkEditTokenService,
+    VoluntaryWorkEmailConfirmationService
+)
 
 
 voluntary_work = Blueprint(
@@ -56,6 +61,37 @@ def post():
     response.status_code = 201
     response.location = url_for('.get', id=voluntary_work.id)
     return response
+
+
+@voluntary_work.route('/<int:id>', methods=['PATCH'])
+def patch(id):
+    voluntary_work = VoluntaryWork.query.filter_by(id=id).one()
+
+    edit_token = request.args.get('edit_token', '')
+    voluntary_work_id = (
+        VoluntaryWorkEditTokenService
+        .get_voluntary_work_id_from_token(edit_token)
+    )
+
+    if voluntary_work.id != voluntary_work_id:
+        abort(403)
+
+    serializer = VoluntaryWorkSerializer([voluntary_work], many=True)
+    json = {'voluntary_works': serializer.data}
+
+    patch = jsonpatch.JsonPatch(request.get_json(force=True))
+    patch.apply(json, in_place=True)
+
+    schema = VoluntaryWorkListSchema()
+    data = schema.deserialize(json)
+    data = data['voluntary_works'][0]
+    data.update(data.pop('links'))
+
+    for key, value in data.iteritems():
+        setattr(voluntary_work, key, value)
+    db.session.commit()
+
+    return Response(mimetype='application/json', status=204)
 
 
 def _get_links():

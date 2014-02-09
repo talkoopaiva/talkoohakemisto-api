@@ -5,7 +5,7 @@ from flask import json, url_for
 import pytest
 import mock
 
-from talkoohakemisto import models, serializers
+from talkoohakemisto import models, serializers, services
 from talkoohakemisto.extensions import db
 from tests import factories
 
@@ -369,3 +369,245 @@ class TestVoluntaryWorkCreationWithInvalidJSON(object):
 
     def test_returns_proper_error_message(self, response):
         assert response.json == {'message': 'Bad request'}
+
+
+@pytest.mark.usefixtures('request_ctx', 'database')
+class TestVoluntaryWorkEditing(object):
+    @pytest.fixture
+    def municipality(self):
+        return factories.MunicipalityFactory()
+
+    @pytest.fixture
+    def voluntary_work(self):
+        return factories.VoluntaryWorkFactory()
+
+    @pytest.fixture
+    def edit_token(self, voluntary_work):
+        return services.VoluntaryWorkEditTokenService.get_token(
+            voluntary_work.id
+        )
+
+    @pytest.fixture
+    def response(self, client, municipality, voluntary_work, edit_token):
+        return client.patch(
+            url_for(
+                'voluntary_work.patch',
+                id=voluntary_work.id,
+                edit_token=edit_token
+            ),
+            data=json.dumps([
+                {
+                    "op": "replace",
+                    "path": "/voluntary_works/0/name",
+                    "value": "Fillareiden korjausta"
+                },
+                {
+                    "op": "replace",
+                    "path": "/voluntary_works/0/links/municipality",
+                    "value": municipality.code
+                }
+            ]),
+            headers={'Content-Type': 'application/json-patch+json'}
+        )
+
+    def test_returns_204(self, response):
+        assert response.status_code == 204
+
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
+
+    def test_updates_the_database(self, response, voluntary_work, municipality):
+        assert voluntary_work.name == u'Fillareiden korjausta'
+        assert voluntary_work.municipality is municipality
+
+
+@pytest.mark.usefixtures('request_ctx', 'database')
+class TestVoluntaryWorkEditingWithMissingEditToken(object):
+    @pytest.fixture
+    def voluntary_work(self):
+        return factories.VoluntaryWorkFactory()
+
+    @pytest.fixture
+    def response(self, client, voluntary_work):
+        return client.patch(
+            url_for(
+                'voluntary_work.patch',
+                id=voluntary_work.id
+            ),
+            data=json.dumps([
+                {
+                    "op": "replace",
+                    "path": "/voluntary_works/0/name",
+                    "value": "Fillareiden korjausta"
+                }
+            ]),
+            headers={'Content-Type': 'application/json-patch+json'}
+        )
+
+    def test_returns_403(self, response):
+        assert response.status_code == 403
+
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
+
+    def test_returns_proper_error_message(self, response):
+        assert response.json == {'message': "Forbidden"}
+
+
+@pytest.mark.usefixtures('request_ctx', 'database')
+class TestVoluntaryWorkEditingWithInvalidEditToken(object):
+    @pytest.fixture
+    def voluntary_work(self):
+        return factories.VoluntaryWorkFactory()
+
+    @pytest.fixture
+    def response(self, client, voluntary_work):
+        return client.patch(
+            url_for(
+                'voluntary_work.patch',
+                id=voluntary_work.id,
+                edit_token='invalid'
+            ),
+            data=json.dumps([
+                {
+                    "op": "replace",
+                    "path": "/voluntary_works/0/name",
+                    "value": "Fillareiden korjausta"
+                }
+            ]),
+            headers={'Content-Type': 'application/json-patch+json'}
+        )
+
+    def test_returns_403(self, response):
+        assert response.status_code == 403
+
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
+
+    def test_returns_proper_error_message(self, response):
+        assert response.json == {'message': "Forbidden"}
+
+
+@pytest.mark.usefixtures('request_ctx', 'database')
+class TestVoluntaryWorkEditingWithWrongEditToken(object):
+    @pytest.fixture
+    def voluntary_work(self):
+        return factories.VoluntaryWorkFactory()
+
+    @pytest.fixture
+    def edit_token(self, voluntary_work):
+        return services.VoluntaryWorkEditTokenService.get_token(
+            voluntary_work.id
+        )
+
+    @pytest.fixture
+    def response(self, client, voluntary_work):
+        edit_token = services.VoluntaryWorkEditTokenService.get_token(999999)
+        return client.patch(
+            url_for(
+                'voluntary_work.patch',
+                id=voluntary_work.id,
+                edit_token=edit_token
+            ),
+            data=json.dumps([
+                {
+                    "op": "replace",
+                    "path": "/voluntary_works/0/name",
+                    "value": "Fillareiden korjausta"
+                }
+            ]),
+            headers={'Content-Type': 'application/json-patch+json'}
+        )
+
+    def test_returns_403(self, response):
+        assert response.status_code == 403
+
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
+
+    def test_returns_proper_error_message(self, response):
+        assert response.json == {'message': "Forbidden"}
+
+
+@pytest.mark.usefixtures('request_ctx', 'database')
+class TestVoluntaryWorkEditingWithNonExistantObject(object):
+    @pytest.fixture
+    def voluntary_work(self):
+        return factories.VoluntaryWorkFactory()
+
+    @pytest.fixture
+    def edit_token(self, voluntary_work):
+        return services.VoluntaryWorkEditTokenService.get_token(
+            voluntary_work.id
+        )
+
+    @pytest.fixture
+    def response(self, client, voluntary_work, edit_token):
+        return client.patch(
+            url_for(
+                'voluntary_work.patch',
+                id=voluntary_work.id,
+                edit_token=edit_token
+            ),
+            data=json.dumps([
+                {
+                    "op": "replace",
+                    "path": "/asdasdd",
+                    "value": "999999"
+                }
+            ]),
+            headers={'Content-Type': 'application/json-patch+json'}
+        )
+
+    def test_returns_400(self, response):
+        assert response.status_code == 400
+
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
+
+    def test_returns_proper_error_message(self, response):
+        assert response.json == {
+            'message': "can't replace non-existant object 'asdasdd'"
+        }
+
+
+@pytest.mark.usefixtures('request_ctx', 'database')
+class TestVoluntaryWorkEditingWithInvalidPath(object):
+    @pytest.fixture
+    def voluntary_work(self):
+        return factories.VoluntaryWorkFactory()
+
+    @pytest.fixture
+    def edit_token(self, voluntary_work):
+        return services.VoluntaryWorkEditTokenService.get_token(
+            voluntary_work.id
+        )
+
+    @pytest.fixture
+    def response(self, client, voluntary_work, edit_token):
+        return client.patch(
+            url_for(
+                'voluntary_work.patch',
+                id=voluntary_work.id,
+                edit_token=edit_token
+            ),
+            data=json.dumps([
+                {
+                    "op": "replace",
+                    "path": "asdasdd",
+                    "value": "999999"
+                }
+            ]),
+            headers={'Content-Type': 'application/json-patch+json'}
+        )
+
+    def test_returns_400(self, response):
+        assert response.status_code == 400
+
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
+
+    def test_returns_proper_errors_message(self, response):
+        assert response.json == {
+            'message': "location must starts with /"
+        }
