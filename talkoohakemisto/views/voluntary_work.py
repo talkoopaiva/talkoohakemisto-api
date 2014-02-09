@@ -71,3 +71,14 @@ def index():
         voluntary_works=serializer.data,
         linked=_get_linked(pagination.items)
     )
+
+
+@voluntary_work.route('/<int:id>')
+def get(id):
+    voluntary_work = VoluntaryWork.query.filter_by(id=id).one()
+    serializer = VoluntaryWorkSerializer([voluntary_work], many=True)
+    return jsonify(
+        links=_get_links(),
+        voluntary_works=serializer.data,
+        linked=_get_linked([voluntary_work])
+    )
