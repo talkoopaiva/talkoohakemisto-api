@@ -3,6 +3,7 @@ Flask-Failsafe==0.2
 Flask-Mail==0.9.0
 Flask-SQLAlchemy==1.0
 Flask-Script==0.6.6
+Flask-SSLify==0.1.4
 Jinja2==2.7.2
 Mako==0.9.1
 MarkupSafe==0.18
