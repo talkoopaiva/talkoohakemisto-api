@@ -85,7 +85,7 @@ class TestMunicipalityGetSingleWhenNotFound(object):
 
     def test_returns_error_as_json(self, response):
         assert response.json == {
-            'message': 'Not found.'
+            'message': 'Not found'
         }
 
 
@@ -103,5 +103,5 @@ class TestMunicipalityGetSingleWithNonIntegerID(object):
 
     def test_returns_error_as_json(self, response):
         assert response.json == {
-            'message': 'Not found.'
+            'message': 'Not found'
         }
