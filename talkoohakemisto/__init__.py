@@ -8,6 +8,7 @@
 import os
 import warnings
 
+import colander
 from flask import Flask, jsonify, _request_ctx_stack
 from sqlalchemy.exc import SAWarning
 from sqlalchemy.orm.exc import NoResultFound
@@ -80,10 +81,25 @@ class Application(Flask):
         ))
 
     def _init_errorhandlers(self):
+        @self.errorhandler(400)
+        def bad_request(error):
+            return jsonify(message=u'Bad request'), 400
+
         @self.errorhandler(404)
         @self.errorhandler(NoResultFound)
         def object_not_found(error):
-            return jsonify(message='Not found.'), 404
+            return jsonify(message=u'Not found.'), 404
+
+        @self.errorhandler(colander.Invalid)
+        def invalid_data(error):
+            errors = [
+                {
+                    'path': '/' + key.replace('.', '/'),
+                    'reason': value
+                }
+                for key, value in error.asdict().iteritems()
+            ]
+            return jsonify(message=u'Invalid data', errors=errors), 400
 
     def _init_request_hooks(self):
         self.after_request(self._add_cors_headers)
