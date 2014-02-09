@@ -66,7 +66,7 @@ class TestVoluntaryWorkIndex(object):
         self, response, municipalities, types, works
     ):
         serializer = serializers.VoluntaryWorkSerializer(
-            sorted(works, key=operator.attrgetter('name')),
+            sorted(works, key=operator.attrgetter('id'), reverse=True),
             many=True
         )
         assert response.json == {

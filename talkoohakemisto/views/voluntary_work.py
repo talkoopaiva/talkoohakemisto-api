@@ -30,7 +30,7 @@ def index():
     page = request.args.get('page', type=int, default=1)
     pagination = (
         VoluntaryWork.query
-        .order_by(VoluntaryWork.id)
+        .order_by(db.desc(VoluntaryWork.id))
         .paginate(page=page)
     )
     return jsonify(**_serialize_pagination(pagination))
