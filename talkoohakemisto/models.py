@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from .extensions import db
 
 
@@ -50,6 +52,11 @@ class VoluntaryWork(db.Model):
     municipality_code = db.Column(
         None,
         db.ForeignKey(Municipality.code),
+        nullable=False
+    )
+    created_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow,
         nullable=False
     )
 

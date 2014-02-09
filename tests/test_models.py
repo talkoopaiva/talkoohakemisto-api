@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime, timedelta
+
 import pytest
 from sqlalchemy.exc import IntegrityError
 
@@ -91,5 +93,16 @@ class TestVoluntaryWork(object):
     def test_cannot_delete_referred_municipality(self, database):
         work = VoluntaryWorkFactory()
         db.session.delete(work.municipality)
+        with pytest.raises(IntegrityError):
+            db.session.commit()
+
+    def test_created_at_is_automatically_set_to_current_time(self, database):
+        work = VoluntaryWorkFactory()
+        timediff = datetime.utcnow() - work.created_at
+        assert timediff < timedelta(seconds=1)
+
+    def test_created_at_cannot_be_none(self, database):
+        work = VoluntaryWorkFactory()
+        work.created_at = None
         with pytest.raises(IntegrityError):
             db.session.commit()
