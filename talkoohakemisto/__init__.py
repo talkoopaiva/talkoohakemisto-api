@@ -103,6 +103,7 @@ class Application(Flask):
 
     def _init_request_hooks(self):
         self.after_request(self._add_cors_headers)
+        self.after_request(self._ensure_response_has_proper_content_type)
 
     def _add_cors_headers(self, response):
         url_adapter = _request_ctx_stack.top.url_adapter
@@ -121,4 +122,9 @@ class Application(Flask):
         }
         response.headers.extend(headers)
 
+        return response
+
+    def _ensure_response_has_proper_content_type(self, response):
+        if response.mimetype == 'application/json':
+            response.mimetype = 'application/vnd.api+json'
         return response

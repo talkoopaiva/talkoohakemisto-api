@@ -27,6 +27,9 @@ class TestMunicipalityIndex(object):
     def test_returns_200(self, response):
         assert response.status_code == 200
 
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
+
     def test_returns_municipalities_as_json(self, response, municipalities):
         serializer = serializers.MunicipalitySerializer(
             municipalities,
@@ -55,6 +58,9 @@ class TestMunicipalityGetSingle(object):
     def test_returns_200(self, response):
         assert response.status_code == 200
 
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
+
     def test_returns_municipality_as_json(self, response, municipality):
         serializer = serializers.MunicipalitySerializer(
             [municipality],
@@ -74,6 +80,9 @@ class TestMunicipalityGetSingleWhenNotFound(object):
     def test_returns_404(self, response):
         assert response.status_code == 404
 
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
+
     def test_returns_error_as_json(self, response):
         assert response.json == {
             'message': 'Not found.'
@@ -88,6 +97,9 @@ class TestMunicipalityGetSingleWithNonIntegerID(object):
 
     def test_returns_404(self, response):
         assert response.status_code == 404
+
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
 
     def test_returns_error_as_json(self, response):
         assert response.json == {

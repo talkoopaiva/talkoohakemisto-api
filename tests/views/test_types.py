@@ -27,6 +27,9 @@ class TestTypeIndex(object):
     def test_returns_200(self, response):
         assert response.status_code == 200
 
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
+
     def test_returns_types_as_json(self, response, types):
         serializer = serializers.VoluntaryWorkTypeSerializer(
             types,
@@ -55,6 +58,9 @@ class TestTypeGetSingle(object):
     def test_returns_200(self, response):
         assert response.status_code == 200
 
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
+
     def test_returns_type_as_json(self, response, type):
         serializer = serializers.VoluntaryWorkTypeSerializer(
             [type],
@@ -74,6 +80,9 @@ class TestTypeGetSingleWhenNotFound(object):
     def test_returns_404(self, response):
         assert response.status_code == 404
 
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
+
     def test_returns_error_as_json(self, response):
         assert response.json == {
             'message': 'Not found.'
@@ -88,6 +97,9 @@ class TestTypeGetSingleWithNonIntegerID(object):
 
     def test_returns_404(self, response):
         assert response.status_code == 404
+
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
 
     def test_returns_error_as_json(self, response):
         assert response.json == {

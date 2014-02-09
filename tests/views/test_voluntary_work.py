@@ -56,6 +56,9 @@ class TestVoluntaryWorkIndex(object):
     def test_returns_200(self, response):
         assert response.status_code == 200
 
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
+
     def test_returns_voluntary_works_as_json(
         self, response, municipalities, types, works
     ):
@@ -120,6 +123,9 @@ class TestVoluntaryWorkGetSingle(object):
     def test_returns_200(self, response):
         assert response.status_code == 200
 
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
+
     def test_returns_type_as_json(self, response, voluntary_work):
         serializer = serializers.VoluntaryWorkSerializer(
             [voluntary_work],
@@ -165,6 +171,9 @@ class TestVoluntaryWorkGetSingleWhenNotFound(object):
     def test_returns_404(self, response):
         assert response.status_code == 404
 
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
+
     def test_returns_error_as_json(self, response):
         assert response.json == {
             'message': 'Not found.'
@@ -179,6 +188,9 @@ class TestVoluntaryWorkGetSingleWithNonIntegerID(object):
 
     def test_returns_404(self, response):
         assert response.status_code == 404
+
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
 
     def test_returns_error_as_json(self, response):
         assert response.json == {
@@ -226,6 +238,9 @@ class TestVoluntaryWorkCreation(object):
                 'Accept': 'application/vnd.api+json',
             }
         )
+
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
 
     @pytest.fixture
     def voluntary_work(self, response):
@@ -294,6 +309,9 @@ class TestVoluntaryWorkCreationWithInvalidData(object):
     def test_returns_400(self, response):
         assert response.status_code == 400
 
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
+
     def test_returns_field_specific_errors(self, response):
         errors = response.json['errors']
         assert response.json['message'] == 'Validation failed'
@@ -324,6 +342,9 @@ class TestVoluntaryWorkCreationWithInvalidJSON(object):
 
     def test_returns_400(self, response):
         assert response.status_code == 400
+
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
 
     def test_returns_proper_error_message(self, response):
         assert response.json == {'message': 'Bad request'}
