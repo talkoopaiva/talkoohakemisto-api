@@ -25,6 +25,7 @@ class Application(Flask):
         self._init_extensions()
         self._init_blueprints()
         self._init_errorhandlers()
+        self._init_request_hooks()
 
     def _init_settings(self, environment=None):
         """
@@ -83,3 +84,19 @@ class Application(Flask):
         @self.errorhandler(NoResultFound)
         def object_not_found(error):
             return jsonify(message='Not found.'), 404
+
+    def _init_request_hooks(self):
+        self.after_request(self._add_cors_headers)
+
+    def _add_cors_headers(self, response):
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = (
+            response.headers['Allow']
+        )
+        response.headers['Access-Control-Allow-Headers'] = ', '.join([
+            'Accept',
+            'Content-Type',
+            'Origin',
+            'X-Requested-With',
+        ])
+        return response
