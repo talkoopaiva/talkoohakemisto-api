@@ -65,6 +65,9 @@ def post():
 
 @voluntary_work.route('/<int:id>', methods=['PATCH'])
 def patch(id):
+    if request.mimetype != 'application/json-patch+json':
+        abort(400)
+
     voluntary_work = VoluntaryWork.query.filter_by(id=id).one()
 
     edit_token = request.args.get('edit_token', '')

@@ -422,6 +422,43 @@ class TestVoluntaryWorkEditing(object):
 
 
 @pytest.mark.usefixtures('request_ctx', 'database')
+class TestVoluntaryWorkEditingWithWrongContentType(object):
+    @pytest.fixture
+    def voluntary_work(self):
+        return factories.VoluntaryWorkFactory()
+
+    @pytest.fixture
+    def edit_token(self, voluntary_work):
+        return services.VoluntaryWorkEditTokenService.get_token(
+            voluntary_work.id
+        )
+
+    @pytest.fixture
+    def response(self, client, voluntary_work, edit_token):
+        return client.patch(
+            url_for(
+                'voluntary_work.patch',
+                id=voluntary_work.id,
+                edit_token=edit_token
+            ),
+            data=json.dumps([
+                {
+                    "op": "replace",
+                    "path": "/voluntary_works/0/name",
+                    "value": "Fillareiden korjausta"
+                }
+            ]),
+            headers={'Content-Type': 'application/json'}
+        )
+
+    def test_returns_400(self, response):
+        assert response.status_code == 400
+
+    def test_response_has_proper_content_type(self, response):
+        assert response.mimetype == 'application/vnd.api+json'
+
+
+@pytest.mark.usefixtures('request_ctx', 'database')
 class TestVoluntaryWorkEditingWithMissingEditToken(object):
     @pytest.fixture
     def voluntary_work(self):
