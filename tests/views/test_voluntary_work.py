@@ -296,7 +296,7 @@ class TestVoluntaryWorkCreationWithInvalidData(object):
 
     def test_returns_field_specific_errors(self, response):
         errors = response.json['errors']
-        assert response.json['message'] == 'Invalid data'
+        assert response.json['message'] == 'Validation failed'
         assert {
             'path': '/voluntary_works/0/contact_email',
             'reason': 'Invalid email address'

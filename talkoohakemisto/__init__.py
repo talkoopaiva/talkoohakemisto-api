@@ -99,7 +99,7 @@ class Application(Flask):
                 }
                 for key, value in error.asdict().iteritems()
             ]
-            return jsonify(message=u'Invalid data', errors=errors), 400
+            return jsonify(message=u'Validation failed', errors=errors), 400
 
     def _init_request_hooks(self):
         self.after_request(self._add_cors_headers)
