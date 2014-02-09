@@ -1,6 +1,9 @@
 Talkoohakemisto API
 ===================
 
+.. image:: https://travis-ci.org/talkoopaiva/talkoohakemisto-api.png?branch=master
+   :target: https://travis-ci.org/talkoopaiva/talkoohakemisto-api
+
 Requirements
 ------------
 
