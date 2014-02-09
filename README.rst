@@ -5,8 +5,8 @@ Requirements
 ------------
 
 - Python 2.7
-- `virtualenvwrapper <http://virtualenvwrapper.readthedocs.org/>`::
-- `autoenv <https://github.com/kennethreitz/autoenv>`
+- `virtualenvwrapper <http://virtualenvwrapper.readthedocs.org/>`_
+- `autoenv <https://github.com/kennethreitz/autoenv>`_
 
 
 Development
