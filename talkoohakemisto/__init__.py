@@ -88,7 +88,13 @@ class Application(Flask):
         @self.errorhandler(404)
         @self.errorhandler(NoResultFound)
         def object_not_found(error):
-            return jsonify(message=u'Not found.'), 404
+            return jsonify(message=u'Not found'), 404
+
+        @self.errorhandler(405)
+        def method_not_allowed(error):
+            return jsonify(
+                message=u'The method is not allowed for the requested URL.'
+            ), 500
 
         @self.errorhandler(colander.Invalid)
         def invalid_data(error):
@@ -100,6 +106,10 @@ class Application(Flask):
                 for key, value in error.asdict().iteritems()
             ]
             return jsonify(message=u'Validation failed', errors=errors), 400
+
+        @self.errorhandler(500)
+        def internal_error(error):
+            return jsonify(message=u'Internal server error'), 500
 
     def _init_request_hooks(self):
         self.after_request(self._add_cors_headers)
