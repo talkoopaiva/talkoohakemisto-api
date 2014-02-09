@@ -8,7 +8,7 @@
 import os
 import warnings
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, _request_ctx_stack
 from sqlalchemy.exc import SAWarning
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -89,14 +89,20 @@ class Application(Flask):
         self.after_request(self._add_cors_headers)
 
     def _add_cors_headers(self, response):
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Methods'] = (
-            response.headers['Allow']
-        )
-        response.headers['Access-Control-Allow-Headers'] = ', '.join([
-            'Accept',
-            'Content-Type',
-            'Origin',
-            'X-Requested-With',
-        ])
+        url_adapter = _request_ctx_stack.top.url_adapter
+
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': ', '.join(
+                url_adapter.allowed_methods()
+            ),
+            'Access-Control-Allow-Headers': ', '.join([
+                'Accept',
+                'Content-Type',
+                'Origin',
+                'X-Requested-With',
+            ])
+        }
+        response.headers.extend(headers)
+
         return response
