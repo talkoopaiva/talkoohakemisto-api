@@ -15,3 +15,10 @@ def index():
     municipalities = Municipality.query.order_by(Municipality.name).all()
     serializer = MunicipalitySerializer(municipalities, many=True)
     return jsonify(municipalities=serializer.data)
+
+
+@municipality.route('/<int:id>')
+def get(id):
+    municipality = Municipality.query.filter_by(code=id).one()
+    serializer = MunicipalitySerializer([municipality], many=True)
+    return jsonify(municipalities=serializer.data)

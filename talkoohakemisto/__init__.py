@@ -8,8 +8,9 @@
 import os
 import warnings
 
-from flask import Flask
+from flask import Flask, jsonify
 from sqlalchemy.exc import SAWarning
+from sqlalchemy.orm.exc import NoResultFound
 
 from .extensions import db, mail, sentry
 
@@ -23,6 +24,7 @@ class Application(Flask):
         self._init_settings(environment)
         self._init_extensions()
         self._init_blueprints()
+        self._init_errorhandlers()
 
     def _init_settings(self, environment=None):
         """
@@ -47,8 +49,11 @@ class Application(Flask):
     def _init_blueprints(self):
         from .views.municipality import municipality
         from .views.type import type
+        from .views.voluntary_work import voluntary_work
+
         self.register_blueprint(municipality)
         self.register_blueprint(type)
+        self.register_blueprint(voluntary_work)
 
     def _init_extensions(self):
         """Initialize and configure Flask extensions with this application."""
@@ -72,3 +77,9 @@ class Application(Flask):
             'newrelic',
             'requests',
         ))
+
+    def _init_errorhandlers(self):
+        @self.errorhandler(404)
+        @self.errorhandler(NoResultFound)
+        def object_not_found(error):
+            return jsonify(message='Not found.'), 404

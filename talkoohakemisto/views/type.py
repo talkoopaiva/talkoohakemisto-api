@@ -19,3 +19,10 @@ def index():
     )
     serializer = VoluntaryWorkTypeSerializer(types, many=True)
     return jsonify(types=serializer.data)
+
+
+@type.route('/<int:id>')
+def get(id):
+    type = VoluntaryWorkType.query.filter_by(id=id).one()
+    serializer = VoluntaryWorkTypeSerializer([type], many=True)
+    return jsonify(types=serializer.data)
