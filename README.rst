@@ -24,7 +24,7 @@ Follow the instructions below to set up the development environment.
 2. Make the virtualenv activate automagically when traversing inside the
    project directory::
 
-    $ echo -e "use_env talkoohakemisto-api\n" > .env
+    $ echo -e "workon talkoohakemisto-api\n" > .env
 
 3. Create databases for development and testing::
 
