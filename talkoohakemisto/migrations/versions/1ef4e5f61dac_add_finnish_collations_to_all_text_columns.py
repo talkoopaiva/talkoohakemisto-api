@@ -34,7 +34,7 @@ def upgrade():
     op.execute(
         '''
         ALTER TABLE voluntary_work
-        ALTER_COLUMN name
+        ALTER COLUMN name
         TYPE varchar(100)
         COLLATE "fi_FI.utf8"
         '''
@@ -42,7 +42,7 @@ def upgrade():
     op.execute(
         '''
         ALTER TABLE voluntary_work
-        ALTER_COLUMN organizer
+        ALTER COLUMN organizer
         TYPE varchar(100)
         COLLATE "fi_FI.utf8"
         '''
@@ -50,7 +50,7 @@ def upgrade():
     op.execute(
         '''
         ALTER TABLE voluntary_work
-        ALTER_COLUMN description
+        ALTER COLUMN description
         TYPE text
         COLLATE "fi_FI.utf8"
         '''
@@ -58,7 +58,7 @@ def upgrade():
     op.execute(
         '''
         ALTER TABLE voluntary_work
-        ALTER_COLUMN street_address
+        ALTER COLUMN street_address
         TYPE varchar(100)
         COLLATE "fi_FI.utf8"
         '''
@@ -66,7 +66,7 @@ def upgrade():
     op.execute(
         '''
         ALTER TABLE voluntary_work
-        ALTER_COLUMN contact_email
+        ALTER COLUMN contact_email
         TYPE varchar(100)
         COLLATE "fi_FI.utf8"
         '''
@@ -92,35 +92,35 @@ def downgrade():
     op.execute(
         '''
         ALTER TABLE voluntary_work
-        ALTER_COLUMN name
+        ALTER COLUMN name
         TYPE varchar(100)
         '''
     )
     op.execute(
         '''
         ALTER TABLE voluntary_work
-        ALTER_COLUMN organizer
+        ALTER COLUMN organizer
         TYPE varchar(100)
         '''
     )
     op.execute(
         '''
         ALTER TABLE voluntary_work
-        ALTER_COLUMN description
+        ALTER COLUMN description
         TYPE text
         '''
     )
     op.execute(
         '''
         ALTER TABLE voluntary_work
-        ALTER_COLUMN street_address
+        ALTER COLUMN street_address
         TYPE varchar(100)
         '''
     )
     op.execute(
         '''
         ALTER TABLE voluntary_work
-        ALTER_COLUMN contact_email
+        ALTER COLUMN contact_email
         TYPE varchar(100)
         '''
     )
