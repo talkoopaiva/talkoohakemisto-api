@@ -1,7 +1,6 @@
 import operator
 
 from flask import abort, Blueprint, jsonify, request, Response, url_for
-import itsdangerous
 import jsonpatch
 
 from ..extensions import db
