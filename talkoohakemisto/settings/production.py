@@ -42,7 +42,7 @@ SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
 # Email configuration
 # -------------------
 
-MAIL_SERVER = 'smtp.mandrillapp.net'
+MAIL_SERVER = 'smtp.mandrillapp.com'
 MAIL_USERNAME = os.environ['MANDRILL_USERNAME']
 MAIL_PASSWORD = os.environ['MANDRILL_APIKEY']
 MAIL_PORT = 587
