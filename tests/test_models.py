@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
-from .factories import MunicipalityFactory, VoluntaryWorkTypeFactory
+import pytest
+from sqlalchemy.exc import IntegrityError
+
+from talkoohakemisto.extensions import db
+
+from .factories import (
+    MunicipalityFactory,
+    VoluntaryWorkFactory,
+    VoluntaryWorkTypeFactory
+)
 
 
 class TestMunicipality(object):
@@ -30,3 +39,57 @@ class TestVoluntaryWorkType(object):
     def test_repr(self):
         type_ = VoluntaryWorkTypeFactory.build()
         assert repr(type_) == '<VoluntaryWorkType {0!r}>'.format(type_.name)
+
+
+class TestVoluntaryWork(object):
+    def test_unicode(self):
+        work = VoluntaryWorkFactory.build()
+        assert unicode(work) == work.name
+
+    def test_str(self):
+        work = VoluntaryWorkTypeFactory.build(name=u'Työpaja')
+        assert str(work) == 'Työpaja'
+
+    def test_repr(self):
+        work = VoluntaryWorkFactory.build()
+        assert repr(work) == '<VoluntaryWork {0!r}>'.format(work.name)
+
+    def test_name_cannot_be_null(self, database):
+        with pytest.raises(IntegrityError):
+            VoluntaryWorkFactory(name=None)
+
+    def test_organizer_cannot_be_null(self, database):
+        with pytest.raises(IntegrityError):
+            VoluntaryWorkFactory(organizer=None)
+
+    def test_description_cannot_be_null(self, database):
+        with pytest.raises(IntegrityError):
+            VoluntaryWorkFactory(description=None)
+
+    def test_street_address_cannot_be_null(self, database):
+        with pytest.raises(IntegrityError):
+            VoluntaryWorkFactory(street_address=None)
+
+    def test_contact_email_cannot_be_null(self, database):
+        with pytest.raises(IntegrityError):
+            VoluntaryWorkFactory(contact_email=None)
+
+    def test_type_cannot_be_none(self, database):
+        with pytest.raises(IntegrityError):
+            VoluntaryWorkFactory(type=None)
+
+    def test_cannot_delete_referred_type(self, database):
+        work = VoluntaryWorkFactory()
+        db.session.delete(work.type)
+        with pytest.raises(IntegrityError):
+            db.session.commit()
+
+    def test_municipality_cannot_be_none(self, database):
+        with pytest.raises(IntegrityError):
+            VoluntaryWorkFactory(municipality=None)
+
+    def test_cannot_delete_referred_municipality(self, database):
+        work = VoluntaryWorkFactory()
+        db.session.delete(work.municipality)
+        with pytest.raises(IntegrityError):
+            db.session.commit()

@@ -31,3 +31,43 @@ class VoluntaryWorkType(db.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class VoluntaryWork(db.Model):
+    __tablename__ = 'voluntary_work'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Unicode(100), nullable=False)
+    organizer = db.Column(db.Unicode(100), nullable=False)
+    description = db.Column(db.UnicodeText, nullable=False)
+    street_address = db.Column(db.Unicode(100), nullable=False)
+    contact_email = db.Column(db.Unicode(100), nullable=False)
+    type_id = db.Column(
+        None,
+        db.ForeignKey(VoluntaryWorkType.id),
+        nullable=False
+    )
+    municipality_code = db.Column(
+        None,
+        db.ForeignKey(Municipality.code),
+        nullable=False
+    )
+
+    type = db.relationship(VoluntaryWorkType)
+    municipality = db.relationship(Municipality)
+
+    @property
+    def links(self):
+        return {
+            'municipality': self.municipality.code,
+            'type': self.type.id
+        }
+
+    def __repr__(self):
+        return '<{0} {1!r}>'.format(self.__class__.__name__, self.name)
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
+    def __unicode__(self):
+        return self.name

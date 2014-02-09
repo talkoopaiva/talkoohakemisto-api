@@ -1,4 +1,5 @@
-from factory import Factory, Sequence
+# -*- coding: utf-8 -*-
+from factory import Factory, Sequence, SubFactory
 
 from talkoohakemisto import models
 from talkoohakemisto.extensions import db
@@ -29,3 +30,14 @@ class MunicipalityFactory(Factory):
 class VoluntaryWorkTypeFactory(Factory):
     FACTORY_FOR = models.VoluntaryWorkType
     name = Sequence(lambda n: u'Tyyppi {0}'.format(n))
+
+
+class VoluntaryWorkFactory(Factory):
+    FACTORY_FOR = models.VoluntaryWork
+    name = Sequence(lambda n: u'Talkoot {0}'.format(n))
+    organizer = u'Pekka Perusjätkä'
+    description = u'Talkootyön kuvaus'
+    street_address = u'Metsänneidonkuja 6'
+    contact_email = u'someone@example.com'
+    type = SubFactory(VoluntaryWorkTypeFactory)
+    municipality = SubFactory(MunicipalityFactory)
