@@ -1,3 +1,5 @@
+import operator
+
 from flask import url_for
 import pytest
 
@@ -32,7 +34,7 @@ class TestTypeIndex(object):
 
     def test_returns_types_as_json(self, response, types):
         serializer = serializers.VoluntaryWorkTypeSerializer(
-            types,
+            sorted(types, key=operator.attrgetter('name')),
             many=True
         )
         assert response.json == {

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import operator
+
 from flask import json, url_for
 import pytest
 import mock
@@ -64,7 +66,7 @@ class TestVoluntaryWorkIndex(object):
         self, response, municipalities, types, works
     ):
         serializer = serializers.VoluntaryWorkSerializer(
-            works,
+            sorted(works, key=operator.attrgetter('name')),
             many=True
         )
         assert response.json == {

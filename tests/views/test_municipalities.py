@@ -1,3 +1,5 @@
+import operator
+
 from flask import url_for
 import pytest
 
@@ -32,7 +34,7 @@ class TestMunicipalityIndex(object):
 
     def test_returns_municipalities_as_json(self, response, municipalities):
         serializer = serializers.MunicipalitySerializer(
-            municipalities,
+            sorted(municipalities, key=operator.attrgetter('name')),
             many=True
         )
         assert response.json == {
