@@ -60,4 +60,3 @@ class TestVoluntaryWorkConfirmationService(object):
         assert msg.subject == u'Kiitos talkoiden ilmoittamisesta!'
         assert msg.sender == u'Talkoopäivä <info@talkoot.fi>'
         assert msg.recipients == [voluntary_work.contact_email]
-        assert expected_url in msg.body
