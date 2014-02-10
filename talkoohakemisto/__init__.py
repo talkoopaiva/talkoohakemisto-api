@@ -10,7 +10,6 @@ import warnings
 
 import colander
 from flask import Flask, jsonify, _request_ctx_stack
-from flask.ext.sslify import SSLify
 import itsdangerous
 import jsonpatch
 import jsonpointer
@@ -63,7 +62,6 @@ class Application(Flask):
 
     def _init_extensions(self):
         """Initialize and configure Flask extensions with this application."""
-        SSLify(self, permanent=True)
         db.init_app(self)
         mail.init_app(self)
         self._init_raven()
