@@ -1,6 +1,7 @@
 import operator
 
-from flask import abort, Blueprint, jsonify, request, Response, url_for
+from flask import abort, Blueprint, request, Response, url_for
+from flask.ext.jsonpify import jsonify
 import jsonpatch
 
 from ..extensions import db
@@ -22,7 +23,6 @@ voluntary_work = Blueprint(
     import_name=__name__,
     url_prefix='/voluntary_works'
 )
-
 
 @voluntary_work.route('')
 def index():
