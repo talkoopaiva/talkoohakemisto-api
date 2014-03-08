@@ -38,11 +38,20 @@ class VoluntaryWorkLinksSchema(colander.MappingSchema):
 
 
 class VoluntaryWorkSchema(colander.MappingSchema):
+
+    time = colander.SchemaNode(
+        colander.String(),
+        validator=colander.Length(min=1, max=100)
+    )
     name = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(min=1, max=100)
     )
-    organizer = colander.SchemaNode(
+    url = colander.SchemaNode(
+        colander.String(),
+        validator=colander.Length(min=1, max=100)
+    )
+    hashtag = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(min=1, max=100)
     )
@@ -51,10 +60,22 @@ class VoluntaryWorkSchema(colander.MappingSchema):
         missing=u'',
         validator=colander.Length(max=1000)
     )
+    goal = colander.SchemaNode(
+        colander.String(),
+        validator=colander.Length(min=1, max=100)
+    )
+    location = colander.SchemaNode(
+        colander.String(),
+        validator=colander.Length(min=1, max=100)
+    )
     street_address = colander.SchemaNode(
         colander.String(),
         missing=u'',
         validator=colander.Length(max=100)
+    )
+    organizer = colander.SchemaNode(
+        colander.String(),
+        validator=colander.Length(min=1, max=100)
     )
     contact_email = colander.SchemaNode(
         colander.String(),
@@ -63,6 +84,11 @@ class VoluntaryWorkSchema(colander.MappingSchema):
             colander.Length(max=100)
         )
     )
+    contact_phone = colander.SchemaNode(
+        colander.String(),
+        validator=colander.Length(min=1, max=100)
+    )
+
     links = VoluntaryWorkLinksSchema()
 
 

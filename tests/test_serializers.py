@@ -33,6 +33,12 @@ def test_voluntary_work_serializer():
         'description': u'Talkootyön kuvaus',
         'street_address': u'Metsänneidonkuja 6',
         'contact_email': u'someone@example.com',
+        'url': u'http://example.com',
+        'hashtag': u'#hashtag',
+        'location': u'Peruskoulu 2',
+        'time': u'11:00 - 20:00',
+        'goal': u'Talkootyön tavoite',
+        'contact_phone': u'+3585554444',
         'links': {
             'municipality': 98,
             'type': 4

@@ -199,6 +199,122 @@ class TestVoluntaryWorkSchema(object):
         errors = excinfo.value.asdict()
         assert errors['contact_email'] == u'Longer than maximum length 100'
 
+    """
+    ö
+    """
+    def test_url_is_optional(self, schema):
+        with pytest.raises(colander.Invalid) as excinfo:
+            schema.deserialize({})
+        errors = excinfo.value.asdict()
+        assert 'url' not in errors
+
+    def test_url_length(self, schema):
+        with pytest.raises(colander.Invalid) as excinfo:
+            schema.deserialize({'url': 100 * 'a'})
+        errors = excinfo.value.asdict()
+        assert 'url' not in errors
+
+        with pytest.raises(colander.Invalid) as excinfo:
+            schema.deserialize({'url': 101 * 'a'})
+        errors = excinfo.value.asdict()
+        assert errors['url'] == u'Longer than maximum length 100'
+
+
+    def test_hashtag_is_optional(self, schema):
+        with pytest.raises(colander.Invalid) as excinfo:
+            schema.deserialize({})
+        errors = excinfo.value.asdict()
+        assert 'hashtag' not in errors
+
+    def test_hashtag_length(self, schema):
+        with pytest.raises(colander.Invalid) as excinfo:
+            schema.deserialize({'hashtag': 100 * 'a'})
+        errors = excinfo.value.asdict()
+        assert 'hashtag' not in errors
+
+        with pytest.raises(colander.Invalid) as excinfo:
+            schema.deserialize({'hashtag': 101 * 'a'})
+        errors = excinfo.value.asdict()
+        assert errors['hashtag'] == u'Longer than maximum length 100'
+
+
+    def test_location_is_optional(self, schema):
+        with pytest.raises(colander.Invalid) as excinfo:
+            schema.deserialize({})
+        errors = excinfo.value.asdict()
+        assert 'location' not in errors
+
+    def test_location_length(self, schema):
+        with pytest.raises(colander.Invalid) as excinfo:
+            schema.deserialize({'location': 100 * 'a'})
+        errors = excinfo.value.asdict()
+        assert 'location' not in errors
+
+        with pytest.raises(colander.Invalid) as excinfo:
+            schema.deserialize({'location': 101 * 'a'})
+        errors = excinfo.value.asdict()
+        assert errors['location'] == u'Longer than maximum length 100'
+
+
+    def test_time_is_optional(self, schema):
+        with pytest.raises(colander.Invalid) as excinfo:
+            schema.deserialize({})
+        errors = excinfo.value.asdict()
+        assert 'time' not in errors
+
+    def test_time_length(self, schema):
+        with pytest.raises(colander.Invalid) as excinfo:
+            schema.deserialize({'time': 100 * 'a'})
+        errors = excinfo.value.asdict()
+        assert 'time' not in errors
+
+        with pytest.raises(colander.Invalid) as excinfo:
+            schema.deserialize({'time': 101 * 'a'})
+        errors = excinfo.value.asdict()
+        assert errors['time'] == u'Longer than maximum length 100'
+
+
+    def test_goal_is_optional(self, schema):
+        with pytest.raises(colander.Invalid) as excinfo:
+            schema.deserialize({})
+        errors = excinfo.value.asdict()
+        assert 'goal' not in errors
+
+    def test_goal_length(self, schema):
+        with pytest.raises(colander.Invalid) as excinfo:
+            schema.deserialize({'goal': 100 * 'a'})
+        errors = excinfo.value.asdict()
+        assert 'goal' not in errors
+
+        with pytest.raises(colander.Invalid) as excinfo:
+            schema.deserialize({'goal': 101 * 'a'})
+        errors = excinfo.value.asdict()
+        assert errors['goal'] == u'Longer than maximum length 100'
+
+
+    def test_contact_phone_is_optional(self, schema):
+        with pytest.raises(colander.Invalid) as excinfo:
+            schema.deserialize({})
+        errors = excinfo.value.asdict()
+        assert 'contact_phone' not in errors
+
+    def test_contact_phone_length(self, schema):
+        with pytest.raises(colander.Invalid) as excinfo:
+            schema.deserialize({'contact_phone': 100 * 'a'})
+        errors = excinfo.value.asdict()
+        assert 'contact_phone' not in errors
+
+        with pytest.raises(colander.Invalid) as excinfo:
+            schema.deserialize({'contact_phone': 101 * 'a'})
+        errors = excinfo.value.asdict()
+        assert errors['contact_phone'] == u'Longer than maximum length 100'
+
+
+
+    """
+    ä
+    """
+
     def test_links_are_required(self, schema):
         with pytest.raises(colander.Invalid) as excinfo:
             schema.deserialize({})
