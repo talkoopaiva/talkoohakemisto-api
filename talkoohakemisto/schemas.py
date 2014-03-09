@@ -38,29 +38,15 @@ class VoluntaryWorkLinksSchema(colander.MappingSchema):
 
 
 class VoluntaryWorkSchema(colander.MappingSchema):
-
-    time = colander.SchemaNode(
-        colander.String(),
-        validator=colander.Length(min=1, max=100)
-    )
     name = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(min=1, max=100)
     )
+    organization = colander.SchemaNode(
+        colander.String(),
+        validator=colander.Length(min=1, max=100)
+    )
     url = colander.SchemaNode(
-        colander.String(),
-        validator=colander.Length(min=1, max=100)
-    )
-    hashtag = colander.SchemaNode(
-        colander.String(),
-        validator=colander.Length(min=1, max=100)
-    )
-    description = colander.SchemaNode(
-        colander.String(),
-        missing=u'',
-        validator=colander.Length(max=1000)
-    )
-    goal = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(min=1, max=100)
     )
@@ -73,6 +59,23 @@ class VoluntaryWorkSchema(colander.MappingSchema):
         missing=u'',
         validator=colander.Length(max=100)
     )
+    time = colander.SchemaNode(
+        colander.String(),
+        validator=colander.Length(min=1, max=100)
+    )
+    goal = colander.SchemaNode(
+        colander.String(),
+        validator=colander.Length(min=1, max=100)
+    )
+    description = colander.SchemaNode(
+        colander.String(),
+        missing=u'',
+        validator=colander.Length(max=1000)
+    )
+    hashtag = colander.SchemaNode(
+        colander.String(),
+        validator=colander.Length(min=1, max=100)
+    )
     organizer = colander.SchemaNode(
         colander.String(),
         validator=colander.Length(min=1, max=100)
@@ -80,7 +83,7 @@ class VoluntaryWorkSchema(colander.MappingSchema):
     contact_email = colander.SchemaNode(
         colander.String(),
         validator=colander.All(
-            colander.Email(),
+            #colander.Email(),
             colander.Length(max=100)
         )
     )

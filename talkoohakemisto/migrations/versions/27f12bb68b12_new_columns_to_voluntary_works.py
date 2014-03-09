@@ -22,6 +22,7 @@ def upgrade():
     op.add_column('voluntary_work', sa.Column('time', sa.Unicode(100), nullable=True))
     op.add_column('voluntary_work', sa.Column('goal', sa.Unicode(100), nullable=True))
     op.add_column('voluntary_work', sa.Column('contact_phone', sa.Unicode(100), nullable=True))
+    op.add_column('voluntary_work', sa.Column('organization', sa.Unicode(100), nullable=True))
     pass
 
 
@@ -33,4 +34,5 @@ def downgrade():
     op.drop_column('voluntary_work', 'time')
     op.drop_column('voluntary_work', 'goal')
     op.drop_column('voluntary_work', 'contact_phone')
+    op.drop_column('voluntary_work', 'organization')
     pass

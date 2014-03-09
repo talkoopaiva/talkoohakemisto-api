@@ -38,5 +38,6 @@ class VoluntaryWorkSerializer(Serializer):
             'location',
             'time',
             'goal',
-            'contact_phone'
+            'contact_phone',
+            'organization'
         )

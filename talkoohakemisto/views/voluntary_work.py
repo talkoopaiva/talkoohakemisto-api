@@ -43,22 +43,41 @@ def get(id):
 
 @voluntary_work.route('', methods=['POST'])
 def post():
+    print 1
     schema = VoluntaryWorkListSchema()
+    print 2
 
-    data = schema.deserialize(request.get_json(force=True))
+    try:
+        data = schema.deserialize(request.get_json(force=True))
+    except Exception as inst:
+        print inst
+
+    print 3
     data = data['voluntary_works'][0]
+    print 4
+
     data.update(data.pop('links'))
+    print 5
 
     voluntary_work = VoluntaryWork(**data)
+    print 6
     db.session.add(voluntary_work)
+    print 7
+
     db.session.commit()
+    print 8
 
     service = VoluntaryWorkEmailConfirmationService(voluntary_work.id)
+    print 9
     service.send_confirmation_email()
+    print 10
 
     response = jsonify(**_serialize([voluntary_work]))
+    print 11
     response.status_code = 201
+    print 12
     response.location = url_for('.get', id=voluntary_work.id)
+    print 13
     return response
 
 

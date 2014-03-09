@@ -51,6 +51,7 @@ class VoluntaryWork(db.Model):
     time = db.Column(db.Unicode(100), nullable=True)
     goal = db.Column(db.Unicode(100), nullable=True)
     contact_phone = db.Column(db.Unicode(100), nullable=True)
+    organization = db.Column(db.Unicode(100), nullable=True)
 
     type_id = db.Column(
         None,
