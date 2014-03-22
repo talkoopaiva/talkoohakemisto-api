@@ -1,7 +1,8 @@
 import operator
 
-from flask import abort, Blueprint, request, Response, url_for
+from flask import abort, Blueprint, request, Response, url_for, json
 from flask.ext.jsonpify import jsonify
+#from flask import jsonify
 import jsonpatch
 
 from ..extensions import db
@@ -40,9 +41,10 @@ def get(id):
     voluntary_work = VoluntaryWork.query.filter_by(id=id).one()
     return jsonify(**_serialize([voluntary_work]))
 
-
-@voluntary_work.route('', methods=['POST'])
+"""
+#@voluntary_work.route('', methods=['POST'])
 def post():
+
     schema = VoluntaryWorkListSchema()
 
     try:
@@ -60,8 +62,53 @@ def post():
 
     service = VoluntaryWorkEmailConfirmationService(voluntary_work.id)
     service.send_confirmation_email()
+    token = VoluntaryWorkEditTokenService.get_token(voluntary_work.id)
+    voluntary_work['token'] = token
 
     response = jsonify(**_serialize([voluntary_work]))
+    response.status_code = 201
+    response.location = url_for('.get', id=voluntary_work.id)
+    return response
+"""
+@voluntary_work.route('/create')
+def post():
+
+    schema = VoluntaryWorkListSchema()
+    print request.args['data']
+
+    print 1
+    try:
+        data = schema.deserialize(json.loads(request.args['data']))
+    except Exception as inst:
+        print "EXCEPTION"
+        print inst
+
+    print 2
+
+    data = data['voluntary_works'][0]
+    data.update(data.pop('links'))
+    print 3
+
+    voluntary_work = VoluntaryWork(**data)
+    db.session.add(voluntary_work)
+    print 4
+
+    db.session.commit()
+    print 5
+
+    service = VoluntaryWorkEmailConfirmationService(voluntary_work.id)
+    service.send_confirmation_email()
+    print 6
+
+    token = VoluntaryWorkEditTokenService.get_token(voluntary_work.id)
+    print 7
+
+    ser = _serialize([voluntary_work])
+    #ser['voluntary_works']['token'] = token
+    print ser['voluntary_works'][0].update({"token": token})
+
+    print 8
+    response = jsonify(**ser)
     response.status_code = 201
     response.location = url_for('.get', id=voluntary_work.id)
     return response
