@@ -15,7 +15,7 @@ def create_app():
 
 
 manager = Manager(create_app)
-manager.add_command('runserver', Server(host='192.168.1.101'))
+manager.add_command('runserver', Server(host='37.139.26.202'))
 
 
 @manager.shell

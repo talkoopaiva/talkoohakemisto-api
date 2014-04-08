@@ -28,7 +28,7 @@ class VoluntaryWorkEmailConfirmationService(object):
         self.voluntary_work = VoluntaryWork.query.get(voluntary_work_id)
 
     def get_editing_url(self):
-        return u'https://hakemisto.talkoot.fi/{id}/muokkaa/{token}'.format(
+        return u'https://hakemisto.talkoot.fi/{id}/edit/{token}'.format(
             id=self.voluntary_work.id,
             token=VoluntaryWorkEditTokenService.get_token(
                 self.voluntary_work.id

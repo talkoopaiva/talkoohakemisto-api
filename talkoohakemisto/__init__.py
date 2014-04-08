@@ -131,10 +131,12 @@ class Application(Flask):
     def _add_cors_headers(self, response):
         url_adapter = _request_ctx_stack.top.url_adapter
 
+#                url_adapter.allowed_methods()
+
         headers = {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': ', '.join(
-                url_adapter.allowed_methods()
+                ['HEAD', 'OPTIONS', 'GET', 'POST', 'PATCH', 'PUT']
             ),
             'Access-Control-Allow-Headers': ', '.join([
                 'Accept',
@@ -143,6 +145,9 @@ class Application(Flask):
                 'X-Requested-With',
             ])
         }
+
+        print headers
+
         response.headers.extend(headers)
 
         return response

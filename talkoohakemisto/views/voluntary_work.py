@@ -1,5 +1,7 @@
 import operator
 
+from pprint import pprint
+
 from flask import abort, Blueprint, request, Response, url_for, json
 from flask.ext.jsonpify import jsonify
 #from flask import jsonify
@@ -41,14 +43,15 @@ def get(id):
     voluntary_work = VoluntaryWork.query.filter_by(id=id).one()
     return jsonify(**_serialize([voluntary_work]))
 
-"""
-#@voluntary_work.route('', methods=['POST'])
-def post():
+
+@voluntary_work.route('', methods=['POST'])
+def post3():
 
     schema = VoluntaryWorkListSchema()
 
     try:
-        data = schema.deserialize(request.get_json(force=True))
+        #data = json.loads(request.data)
+        data = schema.deserialize(json.loads(request.data))
     except Exception as inst:
         print inst
 
@@ -59,96 +62,95 @@ def post():
     db.session.add(voluntary_work)
 
     db.session.commit()
-
     service = VoluntaryWorkEmailConfirmationService(voluntary_work.id)
     service.send_confirmation_email()
-    token = VoluntaryWorkEditTokenService.get_token(voluntary_work.id)
-    voluntary_work['token'] = token
 
-    response = jsonify(**_serialize([voluntary_work]))
+    token = VoluntaryWorkEditTokenService.get_token(voluntary_work.id)
+
+    ser = _serialize([voluntary_work])
+    #ser['voluntary_works'].update({"token": token})
+
+    response = jsonify(**ser)
     response.status_code = 201
     response.location = url_for('.get', id=voluntary_work.id)
     return response
-"""
+
 @voluntary_work.route('/create')
 def post():
 
     schema = VoluntaryWorkListSchema()
-    print request.args['data']
 
-    print 1
     try:
-        data = schema.deserialize(json.loads(request.args['data']))
+        data = json.loads(request.data)
+        #data = schema.deserialize(json.loads(request.args['data']))
     except Exception as inst:
-        print "EXCEPTION"
         print inst
-
-    print 2
 
     data = data['voluntary_works'][0]
     data.update(data.pop('links'))
-    print 3
 
     voluntary_work = VoluntaryWork(**data)
     db.session.add(voluntary_work)
-    print 4
 
     db.session.commit()
-    print 5
 
     service = VoluntaryWorkEmailConfirmationService(voluntary_work.id)
     service.send_confirmation_email()
-    print 6
 
     token = VoluntaryWorkEditTokenService.get_token(voluntary_work.id)
-    print 7
 
     ser = _serialize([voluntary_work])
     #ser['voluntary_works']['token'] = token
-    print ser['voluntary_works'][0].update({"token": token})
 
-    print 8
     response = jsonify(**ser)
     response.status_code = 201
     response.location = url_for('.get', id=voluntary_work.id)
     return response
 
 
-@voluntary_work.route('/<int:id>', methods=['PATCH'])
-def patch(id):
-    if request.mimetype != 'application/json-patch+json':
-        abort(400)
+@voluntary_work.route('/<int:id>', methods=['POST'])
+def post2(id):
+#    if request.mimetype != 'application/json-patch+json':
+#        abort(400)
 
     voluntary_work = VoluntaryWork.query.filter_by(id=id).one()
-    edit_token = request.args.get('edit_token', '')
-    voluntary_work_id = (
-        VoluntaryWorkEditTokenService
-        .get_voluntary_work_id_from_token(edit_token)
-    )
+
+    data = json.loads(request.data)
+    #data = json.loads(request.args['data'])
+
+    edit_token = data['voluntary_works'][0]['token']
+
+    voluntary_work_id = (VoluntaryWorkEditTokenService.get_voluntary_work_id_from_token(edit_token))
 
     if voluntary_work.id != voluntary_work_id:
         abort(403)
 
     serializer = VoluntaryWorkSerializer([voluntary_work], many=True)
-    json = {'voluntary_works': serializer.data}
+    json2 = {'voluntary_works': serializer.data}
+
     try:
-        patch = jsonpatch.JsonPatch(request.get_json(force=True))
+        patch = jsonpatch.JsonPatch(data)
     except Exception as es:
         print es
 
-    patch.apply(json, in_place=True)
-
-    schema = VoluntaryWorkListSchema()
-    data = schema.deserialize(json)
     data = data['voluntary_works'][0]
-    data.update(data.pop('links'))
+    data.pop('links')
+    data.pop('token')
 
-    for key, value in data.iteritems():
-        setattr(voluntary_work, key, value)
-    db.session.commit()
+    try:
+        for key, value in data.iteritems():
+            setattr(voluntary_work, key, value)
+        db.session.commit()
+    except Exception as es:
+        abort(403)
 
-    return Response(mimetype='application/json', status=204)
+    #return Response(mimetype='application/json', status=204)
+    ser = _serialize([voluntary_work])
 
+    response = jsonify(**ser)
+    response.status_code = 200
+    response.location = url_for('.get', id=voluntary_work.id)
+    return response
 
 def _get_links():
     return {

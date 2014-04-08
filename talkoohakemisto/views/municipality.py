@@ -1,4 +1,6 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint
+    #, jsonify
+from flask.ext.jsonpify import jsonify
 
 from ..models import Municipality
 from ..serializers import MunicipalitySerializer
