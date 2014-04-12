@@ -224,6 +224,13 @@ class TestVoluntaryWorkCreation(object):
                 'contact_email': u'matti@mallikas.fi',
                 'street_address': u'Metsänneidonkuja 6',
                 'description': u'Korjataan porukalla fillareita',
+                'location': u'Ylioppilastalo',
+                'name': u'Hyvän olon talkoot',
+                'organization': u'Hyvän olon yhdistys',
+                'organizer': u'Allu',
+                'street_address': u'Mannerheimintie 3',
+                'time': u'12:00',
+                'url': u'http://www.yhdistys.fi',
                 'links': {
                     'municipality': municipality.code,
                     'type': type.id,
@@ -288,6 +295,11 @@ class TestVoluntaryWorkCreation(object):
         assert voluntary_work.contact_email == data['contact_email']
         assert voluntary_work.street_address == data['street_address']
         assert voluntary_work.description == data['description']
+        assert voluntary_work.location == data['location']
+        assert voluntary_work.name == data['name']
+        assert voluntary_work.organization == data['organization']
+        assert voluntary_work.time == data['time']
+        assert voluntary_work.url == data['url']
         assert voluntary_work.municipality is municipality
         assert voluntary_work.type is type
 
