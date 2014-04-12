@@ -70,12 +70,12 @@ class VoluntaryWorkSchema(colander.MappingSchema):
     goal = colander.SchemaNode(
         colander.String(),
         missing=u'',
-        validator=colander.Length(min=1, max=100)
+        validator=colander.Length(min=1, max=10000)
     )
     description = colander.SchemaNode(
         colander.String(),
         missing=u'',
-        validator=colander.Length(max=1000)
+        validator=colander.Length(max=10000)
     )
     hashtag = colander.SchemaNode(
         colander.String(),
