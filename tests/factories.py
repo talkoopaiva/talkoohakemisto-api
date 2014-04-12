@@ -39,5 +39,16 @@ class VoluntaryWorkFactory(Factory):
     description = u'Talkootyön kuvaus'
     street_address = u'Metsänneidonkuja 6'
     contact_email = u'someone@example.com'
+    goal = u'Talkootyön tavoite'
+    url = u'http://example.com'
+    hashtag = u'#hashtag'
+    location = u'Peruskoulu 2'
+    time = u'11:00 - 20:00'
+    contact_phone = u'+3585554444'
+    organization = u'Järjestö'
     type = SubFactory(VoluntaryWorkTypeFactory)
     municipality = SubFactory(MunicipalityFactory)
+
+
+
+

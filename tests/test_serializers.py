@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from talkoohakemisto import serializers
 from tests import factories
+import json
 
 
 def test_municipality_serializer():
@@ -26,21 +27,5 @@ def test_voluntary_work_serializer():
     work.type.id = 4
     work.municipality.code = 98
     serializer = serializers.VoluntaryWorkSerializer(work)
-    assert serializer.data == {
-        'id': 123,
-        'name': work.name,
-        'organizer': u'Pekka Perusjätkä',
-        'description': u'Talkootyön kuvaus',
-        'street_address': u'Metsänneidonkuja 6',
-        'contact_email': u'someone@example.com',
-        'url': u'http://example.com',
-        'hashtag': u'#hashtag',
-        'location': u'Peruskoulu 2',
-        'time': u'11:00 - 20:00',
-        'goal': u'Talkootyön tavoite',
-        'contact_phone': u'+3585554444',
-        'links': {
-            'municipality': 98,
-            'type': 4
-        }
-    }
+
+    assert json.dumps(serializer.data) == '{"description": "Talkooty\u00f6n kuvaus", "links": {"type": 4, "municipality": 98}, "url": "http://example.com", "goal": "Talkooty\u00f6n tavoite", "time": "11:00 - 20:00", "location": "Peruskoulu 2", "hashtag": "#hashtag", "organization": "J\u00e4rjest\u00f6", "organizer": "Pekka Perusj\u00e4tk\u00e4", "contact_phone": "+3585554444", "id": 123, "street_address": "Mets\u00e4nneidonkuja 6", "name": "Talkoot 13"}'

@@ -39,7 +39,7 @@ class TestVoluntaryWorkConfirmationService(object):
 
     @pytest.fixture
     def expected_url(self, expected_token):
-        return 'https://hakemisto.talkoot.fi/123/muokkaa/' + expected_token
+        return 'https://hakemisto.talkoot.fi/123/edit/' + expected_token
 
     @pytest.fixture
     def service(self, voluntary_work):
