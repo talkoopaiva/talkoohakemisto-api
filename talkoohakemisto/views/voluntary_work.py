@@ -50,11 +50,10 @@ def post3():
     schema = VoluntaryWorkListSchema()
 
     try:
-        #data = json.loads(request.data)
         data = schema.deserialize(json.loads(request.data))
     except Exception as inst:
-        print inst
-
+        abort(400)
+        
     data = data['voluntary_works'][0]
     data.update(data.pop('links'))
 
@@ -74,6 +73,7 @@ def post3():
     response.status_code = 201
     response.location = url_for('.get', id=voluntary_work.id)
     return response
+
 
 @voluntary_work.route('/create')
 def post():
