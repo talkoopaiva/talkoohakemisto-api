@@ -49,11 +49,7 @@ def post3():
 
     schema = VoluntaryWorkListSchema()
 
-    try:
-        data = schema.deserialize(json.loads(request.data))
-    except Exception as inst:
-        abort(400)
-        
+    data = schema.deserialize(json.loads(request.data))
     data = data['voluntary_works'][0]
     data.update(data.pop('links'))
 
@@ -112,6 +108,8 @@ def post():
 def post2(id):
 #    if request.mimetype != 'application/json-patch+json':
 #        abort(400)
+
+    print 1
 
     voluntary_work = VoluntaryWork.query.filter_by(id=id).one()
 
