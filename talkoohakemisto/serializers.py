@@ -29,8 +29,8 @@ class VoluntaryWorkSerializer(Serializer):
             'id',
             'name',
             'description',
-            'organizer',
-            'contact_email',
+           # 'organizer',
+           # 'contact_email',
             'street_address',
             'links',
             'url',
@@ -38,6 +38,6 @@ class VoluntaryWorkSerializer(Serializer):
             'location',
             'time',
             'goal',
-            'contact_phone',
+           # 'contact_phone',
             'organization'
         )
