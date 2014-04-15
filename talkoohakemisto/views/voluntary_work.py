@@ -57,8 +57,8 @@ def post3():
     db.session.add(voluntary_work)
 
     db.session.commit()
-#    service = VoluntaryWorkEmailConfirmationService(voluntary_work.id)
-#    service.send_confirmation_email()
+    service = VoluntaryWorkEmailConfirmationService(voluntary_work.id)
+    service.send_confirmation_email()
 
     token = VoluntaryWorkEditTokenService.get_token(voluntary_work.id)
 
