@@ -117,12 +117,12 @@ def post2(id):
     data = json.loads(request.data)
     #data = json.loads(request.args['data'])
 
-    edit_token = data['voluntary_works'][0]['token']
+    #edit_token = data['voluntary_works'][0]['token']
 
-    voluntary_work_id = (VoluntaryWorkEditTokenService.get_voluntary_work_id_from_token(edit_token))
+    #voluntary_work_id = (VoluntaryWorkEditTokenService.get_voluntary_work_id_from_token(edit_token))
 
-    if voluntary_work.id != voluntary_work_id:
-        abort(403)
+    #if voluntary_work.id != voluntary_work_id:
+    #    abort(403)
 
     serializer = VoluntaryWorkSerializer([voluntary_work], many=True)
     json2 = {'voluntary_works': serializer.data}
