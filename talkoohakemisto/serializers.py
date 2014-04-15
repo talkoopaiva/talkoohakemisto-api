@@ -30,7 +30,7 @@ class VoluntaryWorkSerializer(Serializer):
             'name',
             'description',
             'organizer',
-           # 'contact_email',
+            'contact_email',
             'street_address',
             'links',
             'url',
