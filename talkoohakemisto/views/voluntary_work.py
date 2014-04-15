@@ -33,7 +33,8 @@ def index():
     pagination = (
         VoluntaryWork.query
         .order_by(db.desc(VoluntaryWork.id))
-        .paginate(page=page)
+        .paginate(page=page, per_page=200)
+
     )
     return jsonify(**_serialize_pagination(pagination))
 
@@ -57,8 +58,8 @@ def post3():
     db.session.add(voluntary_work)
 
     db.session.commit()
-    #service = VoluntaryWorkEmailConfirmationService(voluntary_work.id)
-    #service.send_confirmation_email()
+    service = VoluntaryWorkEmailConfirmationService(voluntary_work.id)
+    service.send_confirmation_email()
 
     token = VoluntaryWorkEditTokenService.get_token(voluntary_work.id)
 
@@ -91,8 +92,8 @@ def post():
     db.session.commit()
 
 
-    #service = VoluntaryWorkEmailConfirmationService(voluntary_work.id)
-    #service.send_confirmation_email()
+    service = VoluntaryWorkEmailConfirmationService(voluntary_work.id)
+    service.send_confirmation_email()
 
     token = VoluntaryWorkEditTokenService.get_token(voluntary_work.id)
 
@@ -117,12 +118,12 @@ def post2(id):
     data = json.loads(request.data)
     #data = json.loads(request.args['data'])
 
-    #edit_token = data['voluntary_works'][0]['token']
+    edit_token = data['voluntary_works'][0]['token']
 
-    #voluntary_work_id = (VoluntaryWorkEditTokenService.get_voluntary_work_id_from_token(edit_token))
+    voluntary_work_id = (VoluntaryWorkEditTokenService.get_voluntary_work_id_from_token(edit_token))
 
-    #if voluntary_work.id != voluntary_work_id:
-    #    abort(403)
+    if voluntary_work.id != voluntary_work_id:
+        abort(403)
 
     serializer = VoluntaryWorkSerializer([voluntary_work], many=True)
     json2 = {'voluntary_works': serializer.data}
