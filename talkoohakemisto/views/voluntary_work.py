@@ -43,13 +43,6 @@ def get(id):
     voluntary_work = VoluntaryWork.query.filter_by(id=id).one()
     return jsonify(**_serialize([voluntary_work]))
 
-@voluntary_work.route('/<int:id>/TORMENT')
-def get2(id):
-    voluntary_work = VoluntaryWork.query.filter_by(id=id).one()
-    token = VoluntaryWorkEditTokenService.get_token(voluntary_work.id)
-    arr = {'id': voluntary_work.id, 'token': token, 'email': voluntary_work.contact_email, 'name':voluntary_work.name, 'organizer':voluntary_work.organizer}
-    return  jsonify(**arr)
-
 @voluntary_work.route('', methods=['POST'])
 def post3():
 
