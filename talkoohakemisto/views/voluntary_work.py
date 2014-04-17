@@ -34,7 +34,6 @@ def index():
         VoluntaryWork.query
         .order_by(db.desc(VoluntaryWork.id))
         .paginate(page=page, per_page=200)
-
     )
     return jsonify(**_serialize_pagination(pagination))
 
@@ -48,8 +47,8 @@ def get(id):
 def get2(id):
     voluntary_work = VoluntaryWork.query.filter_by(id=id).one()
     token = VoluntaryWorkEditTokenService.get_token(voluntary_work.id)
-    arr = {voluntary_work.id, token, voluntary_work.contact_email, voluntary_work.name, voluntary_work.organizer}
-    return jsonify(**_serialize([arr]))
+    arr = {'id': voluntary_work.id, 'token': token, 'email': voluntary_work.contact_email, 'name':voluntary_work.name, 'organizer':voluntary_work.organizer}
+    return  jsonify(**arr)
 
 @voluntary_work.route('', methods=['POST'])
 def post3():
