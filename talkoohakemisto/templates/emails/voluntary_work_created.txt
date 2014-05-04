@@ -3,14 +3,22 @@ Hei!
 Kiitos Talkoiden ilmoittamisesta talkoot.fi-sivustolla. Ansiostasi Suomeen
 saattaa seuraavien vuosien aikana syntyä jotain todella merkittävää. 
 
-Kiitos Talkoiden ilmoittamisesta Talkoot.fi-sivustolla. Jos haluat muokata
-tulevien talkoidesi tietoja, hyödynnä tätä linkkiä:
+Jos haluat muokata tulevien talkoidesi tietoja, hyödynnä tätä linkkiä:
 
 {{ edit_url|safe }}
 
-Jos et ole ilmoittanut Talkoita talkoot.fi-sivustolla, jonkun on täytynyt
+Jos et ole ilmoittanut talkoita talkoot.fi-sivustolla, jonkun on täytynyt
 laittaa sähköpostisi verkkosivustolle epähuomiossa ja pyydämme ottamaan
 yhteyttä info@talkoot.fi osoitteeseen.
+
+Menestyksekkäitä talkoita varten suosittelemme tiedon jakamista talkoista. Tämä onnistuu helpoiten jakamalla talkoohakemiston talkoosivua %TALKOOURL% verkon kautta ystävillesi. Tämän lisäksi suosittelemme oman Facebook-tapahtuman tekemistä talkoillesi. Varmistathan, että tapahtumasi on määritelty julkiseksi tätä tehdessäsi. Lisäksi kannattaa mainita tapahtumasta ja osallistumismahdollisuuksista muussa mediassa, kuten Twitterissä, blogissasi tai järjestösi kotisivuilla.
+
+Esimerkkejä talkoosivuista: 
+https://www.facebook.com/events/537249719726974/
+https://www.facebook.com/events/226353477564357/
+https://www.facebook.com/events/393213930821797/
+http://www.rockinghorse.fi/uutiset.html?19
+http://lisasounio.com/wikitalkoot
 
 Kiittäen,
 Talkootiimi
