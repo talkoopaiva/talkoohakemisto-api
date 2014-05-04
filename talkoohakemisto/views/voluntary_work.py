@@ -45,7 +45,7 @@ def get(id):
     return jsonify(**_serialize([voluntary_work]))
 
 @voluntary_work.route('/edit/<int:id>/<string:token>')
-def editget(id):
+def editget(id, token):
     voluntary_work = VoluntaryWork.query.filter_by(id=id).one()
     return jsonify(**_serialize_edit([voluntary_work]))
 
