@@ -44,7 +44,6 @@ class VoluntaryWork(db.Model):
     description = db.Column(db.UnicodeText, nullable=False)
     street_address = db.Column(db.Unicode(100), nullable=False)
     contact_email = db.Column(db.Unicode(100), nullable=False)
-
     url = db.Column(db.Unicode(100), nullable=True)
     hashtag = db.Column(db.Unicode(100), nullable=True)
     location = db.Column(db.Unicode(100), nullable=True)

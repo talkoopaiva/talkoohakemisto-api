@@ -41,3 +41,25 @@ class VoluntaryWorkSerializer(Serializer):
             #'contact_phone',
             'organization'
         )
+
+class VoluntaryWorkEditSerializer(Serializer):
+    links = fields.Nested(VoluntaryWorkLinksSerializer)
+
+    class Meta:
+        fields = (
+            'id',
+            'name',
+            'description',
+            'organizer',
+            'contact_email',
+            'street_address',
+            'links',
+            'url',
+            'hashtag',
+            'location',
+            'time',
+            'goal',
+            'contact_phone',
+            'organization'
+        )
+

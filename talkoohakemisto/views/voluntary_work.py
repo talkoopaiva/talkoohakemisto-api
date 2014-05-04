@@ -13,6 +13,7 @@ from ..schemas import VoluntaryWorkListSchema
 from ..serializers import (
     MunicipalitySerializer,
     VoluntaryWorkSerializer,
+    VoluntaryWorkEditSerializer,
     VoluntaryWorkTypeSerializer,
 )
 from ..services import (
@@ -42,6 +43,11 @@ def index():
 def get(id):
     voluntary_work = VoluntaryWork.query.filter_by(id=id).one()
     return jsonify(**_serialize([voluntary_work]))
+
+@voluntary_work.route('/edit/<int:id>')
+def editget(id):
+    voluntary_work = VoluntaryWork.query.filter_by(id=id).one()
+    return jsonify(**_serialize_edit([voluntary_work]))
 
 @voluntary_work.route('', methods=['POST'])
 def post3():
@@ -109,12 +115,9 @@ def post2(id):
 #    if request.mimetype != 'application/json-patch+json':
 #        abort(400)
 
-    print 1
-
     voluntary_work = VoluntaryWork.query.filter_by(id=id).one()
 
     data = json.loads(request.data)
-    #data = json.loads(request.args['data'])
 
     edit_token = data['voluntary_works'][0]['token']
 
@@ -123,7 +126,7 @@ def post2(id):
     if voluntary_work.id != voluntary_work_id:
         abort(403)
 
-    serializer = VoluntaryWorkSerializer([voluntary_work], many=True)
+    serializer = VoluntaryWorkEditSerializer([voluntary_work], many=True)
     json2 = {'voluntary_works': serializer.data}
 
     try:
@@ -191,6 +194,13 @@ def _serialize(voluntary_works):
         'linked': _get_linked(voluntary_works)
     }
 
+def _serialize_edit(voluntary_works):
+    serializer = VoluntaryWorkEditSerializer(voluntary_works, many=True)
+    return {
+        'links': _get_links(),
+        'voluntary_works': serializer.data,
+        'linked': _get_linked(voluntary_works)
+    }
 
 def _serialize_pagination(pagination):
     data = _serialize(pagination.items)
