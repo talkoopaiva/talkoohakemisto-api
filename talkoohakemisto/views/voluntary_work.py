@@ -34,7 +34,6 @@ def index():
         VoluntaryWork.query
         .order_by(db.desc(VoluntaryWork.id))
         .paginate(page=page, per_page=200)
-
     )
     return jsonify(**_serialize_pagination(pagination))
 
@@ -43,7 +42,6 @@ def index():
 def get(id):
     voluntary_work = VoluntaryWork.query.filter_by(id=id).one()
     return jsonify(**_serialize([voluntary_work]))
-
 
 @voluntary_work.route('', methods=['POST'])
 def post3():
