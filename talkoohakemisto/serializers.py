@@ -39,7 +39,9 @@ class VoluntaryWorkSerializer(Serializer):
             'time',
             'goal',
             #'contact_phone',
-            'organization'
+            'organization',
+            'lat',
+            'long'
         )
 
 class VoluntaryWorkEditSerializer(Serializer):
@@ -60,6 +62,8 @@ class VoluntaryWorkEditSerializer(Serializer):
             'time',
             'goal',
             'contact_phone',
-            'organization'
+            'organization',
+            'lat',
+            'long'
         )
 

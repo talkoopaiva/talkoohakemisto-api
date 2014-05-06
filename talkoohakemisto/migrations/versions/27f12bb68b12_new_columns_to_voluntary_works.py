@@ -27,7 +27,6 @@ def upgrade():
 
 
 def downgrade():
-
     op.drop_column('voluntary_work', 'url')
     op.drop_column('voluntary_work', 'hashtag')
     op.drop_column('voluntary_work', 'location')
